@@ -1,0 +1,20 @@
+.loading-files_version_cleaner {
+  background: url('../img/ajax-loader.gif') no-repeat center;
+  display: inline-block;
+  vertical-align: middle;
+  height: 33px;
+  width: 33px;
+}
+
+.files_version_cleaner-red {
+  color: #FF4343;
+}
+
+.files_version_cleaner-green {
+  color: #147B14;
+}
+
+.files_version_cleaner-msg {
+  font-size: 1.3em;
+  margin-left: 3px;
+}

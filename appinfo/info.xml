@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<info>
+    <id>files_version_cleaner</id>
+    <name>Files Version Cleaner</name>
+    <description>My first ownCloud app</description>
+    <licence>AGPL</licence>
+    <author>DaubaKao</author>
+    <version>0.0.1</version>
+    <namespace>Files_Version_Cleaner</namespace>
+    <category>other</category>
+    <dependencies>
+        <owncloud min-version="8.1" />
+    </dependencies>
+</info>
