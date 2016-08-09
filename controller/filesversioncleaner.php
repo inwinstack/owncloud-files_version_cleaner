@@ -53,4 +53,19 @@ class FilesVersionCleaner extends Controller
 
         return new JSONResponse($result);
     }
+
+    /**
+     * Delete specific version
+     *
+     * @return json response
+     */
+    public function deleteVersion($file, $revision)
+    {
+        $result = array();
+
+        $this->filesVersionCleaner->delete($file, $revision);
+
+        $result["success"] = true;
+        return new JSONResponse($result);
+    }
 }

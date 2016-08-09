@@ -50,30 +50,29 @@ class FilesVersionCleaner
         $this->deleteVersion($versions);
     }
     
-    /**
-     * Delete version
-     *
-     * @return void
-     */
     public function deleteVersion($versions)
     {
         $userMaxVersionNum = \OCP\Config::getUserValue($this->uid, "files_version_cleaner", "versionNumber");
 
         foreach ($versions as $version) {
             if (count($version) > $userMaxVersionNum) {
-                $view = new \OC\Files\View('/' . \OC_User::getUser() . '/files_versions');
                 $toDelete = array_slice($version, $userMaxVersionNum);
 
                 if (!empty($toDelete)) {
                     foreach ($toDelete as $v) {
-                        $view->unlink($v["path"] . ".v" . $v['version']);
-                        list($storage, $internalPath) = $view->resolvePath($v["path"]);
-                        $cache = $storage->getCache($internalPath);
-                        $cache->remove($internalPath);
+                        self::delete($v["path"], $v["version"]);
                     }
                 }
             }
         }
     }
     
+    public function delete($path, $revision)
+    {
+        $view = new \OC\Files\View('/' . \OC_User::getUser() . '/files_versions');
+        $view->unlink($path . ".v" . $revision);
+        list($storage, $internalPath) = $view->resolvePath($path);
+        $cache = $storage->getCache($internalPath);
+        $cache->remove($internalPath);
+    }
 }
