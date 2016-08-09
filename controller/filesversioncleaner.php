@@ -39,13 +39,13 @@ class FilesVersionCleaner extends Controller
      * @return json response
      * @author Dauba
      **/
-    public function setUserVersionNumber($versionNumber, $filesVersionCleaner) {
+    public function setUserVersionNumber($versionNumber, $key) {
         $result = array();
         $uid = \OC_User::getUser();
 
-        $this->config->setUserValue($uid, "files_version_cleaner", "versionNumber", $versionNumber);
+        $this->config->setUserValue($uid, "files_version_cleaner", $key, $versionNumber);
 
-        $result["success"] = $this->config->getUserValue($uid, "files_version_cleaner", "versionNumber") ? true : false;
+        $result["success"] = $this->config->getUserValue($uid, "files_version_cleaner", $key) ? true : false;
 
         if ($result["success"]) {
             $this->filesVersionCleaner->deleteVersions("/");
