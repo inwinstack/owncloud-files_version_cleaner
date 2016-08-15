@@ -20,18 +20,25 @@ class Application Extends App
 
         $container->registerService("FilesVersionCleanerController", function($c) {
             return new \OCA\Files_Version_Cleaner\Controller\FilesVersionCleaner(
+                $c->getAppName(),
                 \OC::$server->getConfig(),
                 $c->query("FilesVersionCleaner")
             );
         });
 
         $container->registerService("FilesVersionCleaner", function($c){
-            return new \OCA\Files_Version_Cleaner\FilesVersionCleaner($c->query("UserRootView"));
+            return new \OCA\Files_Version_Cleaner\FilesVersionCleaner(
+                $c->getAppName(),
+                $c->query("UserRootView")
+            );
         });
 
         $container->registerService("Hooks", function($c){
             return new \OCA\Files_Version_Cleaner\Hooks(
+                $c->getAppName(),
+                $c->query("ServerContainer")->getUserSession(),
                 $c->query("ServerContainer")->getRootFolder(),
+                $c->query("ServerContainer")->getSystemConfig(),
                 $c->query("FilesVersionCleaner")
             );
         });
