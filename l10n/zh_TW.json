@@ -1,5 +1,6 @@
 { "translations": {
     "Max number of files versions" : "最大版本數量",
+    "Max number of files historic versions" : "最大歷史版本數量",
     "Change successful!" : "變更成功！",
     "Change unsuccessful!" : "變更失敗！"
 },"pluralForm" :"nplurals=1; plural=0;"
