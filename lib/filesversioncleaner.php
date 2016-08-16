@@ -66,15 +66,15 @@ class FilesVersionCleaner
      */
     public function deleteHistoricVersion($versions)
     {
-        $userMaxHistoricVersionNum = \OCP\Config::getUserValue($this->uid, $this->appName, "historicVersionNumber", \OCP\Config::getSystemValue('files_version_cleaner_default_historic_version_number'));
+        $userMaxHistoricVersionNum = (int)\OCP\Config::getUserValue($this->uid, $this->appName, "historicVersionNumber", \OCP\Config::getSystemValue('files_version_cleaner_default_historic_version_number'));
 
         for ($i = 0; $i < count($versions); $i++) {
             $j = 0;
             foreach ($versions[$i] as $version) {
-                if (date("z", (int)$version["version"]) + 1 - $this->nowDate != 0) {
+                $j++;
+                if (date("z", (int)$version["version"]) + 1 != $this->nowDate) {
                     break;
                 }
-                $j++;
             }
             $versions[$i] = array_values(array_slice($versions[$i], $j));
         }
@@ -87,10 +87,8 @@ class FilesVersionCleaner
                 }
             }
 
-            if (!empty($toDelete)) {
-                foreach ($toDelete as $v) {
-                    self::delete($v["path"], $v["version"]);
-                }
+            foreach ($toDelete as $v) {
+                self::delete($v["path"], $v["version"]);
             }
 
             if (count($version) > $userMaxHistoricVersionNum) {
@@ -110,10 +108,10 @@ class FilesVersionCleaner
         for ($i = 0; $i < count($versions); $i++) {
             $j = 0;
             foreach ($versions[$i] as $version) {
-                if (date("z", (int)$version["version"]) + 1 - $this->nowDate != 0) {
+                $j++;
+                if (date("z", (int)$version["version"]) + 1 != $this->nowDate) {
                     break;
                 }
-                $j++;
             }
             $versions[$i] = array_slice($versions[$i], 0, $j);
         }
