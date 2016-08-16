@@ -71,10 +71,10 @@ class FilesVersionCleaner
         for ($i = 0; $i < count($versions); $i++) {
             $j = 0;
             foreach ($versions[$i] as $version) {
-                $j++;
                 if (date("z", (int)$version["version"]) + 1 != $this->nowDate) {
                     break;
                 }
+                $j++;
             }
             $versions[$i] = array_values(array_slice($versions[$i], $j));
         }
@@ -83,18 +83,22 @@ class FilesVersionCleaner
             for ($i = count($version) - 1; $i > 0; $i--) {
                 if (date("z", (int)$version[$i]["version"]) == date("z", (int)$version[$i-1]["version"])) {
                     $toDelete[] = $version[$i];
-                    array_splice($version[$i], $i, 1);
+                    array_splice($version, $i, 1);
                 }
             }
 
-            foreach ($toDelete as $v) {
-                self::delete($v["path"], $v["version"]);
+            if (!empty($toDelete)) {
+                foreach ($toDelete as $v) {
+                    self::delete($v["path"], $v["version"]);
+                }
             }
 
             if (count($version) > $userMaxHistoricVersionNum) {
                 $toDelete1 = array_slice($version, $userMaxHistoricVersionNum);
-                foreach ($toDelete1 as $v) {
-                    self::delete($v["path"], $v["version"]);
+                if (!empty($toDelete1)) {
+                    foreach ($toDelete1 as $v) {
+                        self::delete($v["path"], $v["version"]);
+                    }
                 }
             }
         }
@@ -108,10 +112,10 @@ class FilesVersionCleaner
         for ($i = 0; $i < count($versions); $i++) {
             $j = 0;
             foreach ($versions[$i] as $version) {
-                $j++;
                 if (date("z", (int)$version["version"]) + 1 != $this->nowDate) {
                     break;
                 }
+                $j++;
             }
             $versions[$i] = array_slice($versions[$i], 0, $j);
         }
