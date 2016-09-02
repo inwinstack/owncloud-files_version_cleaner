@@ -20,3 +20,5 @@ $app->getContainer()->query("Hooks")->register();
 
 \OCP\App::registerPersonal("files_version_cleaner", "personal");
 
+\OCP\Util::addScript("files_version_cleaner", "versioncleanerview");
+\OCP\Util::addScript("files_version_cleaner", "versioncleanermodel");
