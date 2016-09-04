@@ -104,7 +104,6 @@ class FilesVersionCleaner
         }
     }
     
-    
     public function deleteVersion($versions)
     {
         $userMaxVersionNum = \OCP\Config::getUserValue($this->uid, $this->appName, "versionNumber", \OCP\Config::getSystemValue('files_version_cleaner_default_version_number'));

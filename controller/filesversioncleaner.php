@@ -71,6 +71,50 @@ class FilesVersionCleaner extends Controller
     }
 
     /**
+     * set user versoin control folder
+     *
+     * @return json response
+     */
+    public function setUserVersionFolder($folderName, $value) {
+        $uid = \OC_User::getUser();
+        $folders = $this->config->getUserValue($uid, $this->appName, "folders", "[]");
+        $folders = json_decode($folders);
+        $value = $value == "true" ? true : false;
+        $key = array_search($folderName, $folders);
+
+        if ($value && !in_array($folderName, $folders)) {
+            $folders[] = $folderName;
+        }
+        else if(!$value && $key) {
+            unset($folders[$key]);
+        }
+
+        $foldersStr = json_encode($folders);
+        $this->config->setUserValue($uid, $this->appName, "folders", $foldersStr);
+
+        $result = $folders;
+
+        return new JSONResponse($result);
+    }
+
+    /**
+     * get folder version controller status
+     *
+     * @return JSON response
+     */
+    public function getUserVersionFolder($folderName) {
+        $result = array();
+        $uid = \OC_User::getUser();
+        $folders = $this->config->getUserValue($uid, $this->appName, "folders", "[]");
+        $folders = json_decode($folders);
+
+        $result["value"] = in_array($folderName, $folders) ? true : false;
+        $result["success"] = true;
+
+        return new JSONResponse($result);
+    }
+
+    /**
      * Delete specific version
      *
      * @return json response

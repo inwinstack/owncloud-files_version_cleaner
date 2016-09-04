@@ -21,5 +21,7 @@ return [
     'routes' => [
         ['name' => 'FilesVersionCleaner#setUserVersionNumber', 'url' => '/set_number', 'verb' => 'POST'],
         ['name' => 'FilesVersionCleaner#deleteVersion', 'url' => '/deleteVersion', 'verb' => 'GET'],
+        ['name' => 'FilesVersionCleaner#setUserVersionFolder', 'url' => '/folderStatus', 'verb' => 'POST'],
+        ['name' => 'FilesVersionCleaner#getUserVersionFolder', 'url' => '/folderStatus', 'verb' => 'GET'],
     ]
 ];
