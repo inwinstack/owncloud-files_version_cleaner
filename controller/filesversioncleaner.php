@@ -109,8 +109,9 @@ class FilesVersionCleaner extends Controller
         if ($value && !in_array($folderName, $folders)) {
             $folders[] = $folderName;
         }
-        else if(!$value && $key) {
+        else if(!$value) {
             unset($folders[$key]);
+            $this->filesVersionCleaner->cleanAllVersions($folderName);
         }
 
         $foldersStr = json_encode($folders);

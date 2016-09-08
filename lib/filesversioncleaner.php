@@ -97,6 +97,34 @@ class FilesVersionCleaner
             }
         }
     }
+
+    /**
+     * delete all versions when cancel version control on folder
+     *
+     * @return void
+     */
+    public function cleanAllVersions($root) {
+        $files = $this->filesView->getDirectoryContent($root, NULL);
+        $view = new \OC\Files\View('/' . $this->uid . '/files_versions');
+
+        foreach ($files as $file) {
+            $relativePath = $this->filesView->getRelativePath($file->getPath());
+
+            if($file->getType() === "dir") {
+                self::cleanAllVersions($relativePath);
+            }
+            else {
+                $versions = \OCA\Files_Versions\Storage::getVersions($this->uid, $relativePath);
+                if (!empty($versions)) {
+                    foreach ($versions as $v) {
+                        \OC_Hook::emit('\OCP\Versions', 'preDelete', array('path' => $relativePath . $v['version']));
+                        self::delete($relativePath, $v['version']);
+                        \OC_Hook::emit('\OCP\Versions', 'delete', array('path' => $relativePath . $v['version']));
+                    }
+                }
+            }
+        }
+    }
     
     public function delete($path, $revision)
     {
