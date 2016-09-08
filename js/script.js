@@ -10,6 +10,9 @@ $(document).ready(function() {
     input_historic: $('#files_version_cleaner_personal_input_historic'),
     loading_historic: $('#files_version_cleaner_loader_historic'),
     msg_historic: {"success": $('#files_version_cleaner_msg_success_historic'), "fail": $('#files_version_cleaner_msg_fail_historic')},
+    input_interval: $('#files_version_cleaner_personal_interval_input'),
+    loading_interval: $('#files_version_cleaner_loader_interval'),
+    msg_interval: {"success": $('#files_version_cleaner_msg_success_interval'), "fail": $('#files_version_cleaner_msg_fail_interval')},
   };
 
   FilesVersionCleaner.setVersionNumber = function(){
@@ -40,7 +43,30 @@ $(document).ready(function() {
     });
   };
 
+  FilesVersionCleaner.setIntervalNumber = function(){
+    var self = $(this);
+
+    var loader = FilesVersionCleaner.view.loading_interval.show();
+    var msg = FilesVersionCleaner.view.msg_interval;
+    console.dir(this.value);
+
+    $.ajax({
+      url: OC.generateUrl('apps/files_version_cleaner/setInterval'),
+      method: 'POST',
+      data: {"interval" : self.val()},
+    })
+    .then(function(data) {
+      msg = data.success ? msg.success : msg.fail;
+      msg.show();
+      msg.delay(2000).fadeOut(1000);
+    })
+    .done(function(){
+      loader.hide();
+    });
+  };
+
   FilesVersionCleaner.view.input.change(FilesVersionCleaner.setVersionNumber);
   FilesVersionCleaner.view.input_historic.change(FilesVersionCleaner.setVersionNumber);
+  FilesVersionCleaner.view.input_interval.change(FilesVersionCleaner.setIntervalNumber);
 });
 })(jQuery, OC);
