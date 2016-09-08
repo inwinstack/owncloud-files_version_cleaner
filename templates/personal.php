@@ -3,7 +3,7 @@
     style("files_version_cleaner", "style");
 ?>
 <div class="section" id="files_version_cleaner_section">
-    <h2><?php p($l->t('Max number of files versions')); ?></h2>
+    <h2><?php p($l->t('Version control')); ?></h2>
     <div>
         <label for="files_version_cleaner_personal_input"><?php p($l->t( 'Max number of files versions' )); ?> </label>
         <select id="files_version_cleaner_personal_input" data-key="versionNumber">
@@ -23,5 +23,12 @@
         <div class="loading-files_version_cleaner" id="files_version_cleaner_loader_historic" style="display: none;"></div>
         <span id="files_version_cleaner_msg_success_historic" class="files_version_cleaner-msg files_version_cleaner-green" hidden><?php p($l->t("Change successful!"))?></span>
         <span id="files_version_cleaner_msg_fail_historic" class="files_version_cleaner-msg files_version_cleaner-red" hidden><?php p($l->t("Change unsuccessful!"))?></span>
+    </div>
+    <div>
+        <label for="files_version_cleaner_personal_input_historic"><?php p($l->t( 'Interval of per historic version (HR)' )); ?> </label>
+        <input id="files_version_cleaner_personal_interval_input" type="number" min="1" max="720" value="<?php echo $_["interval"] ?>">
+        <div class="loading-files_version_cleaner" id="files_version_cleaner_loader_interval" style="display: none;"></div>
+        <span id="files_version_cleaner_msg_success_interval" class="files_version_cleaner-msg files_version_cleaner-green" hidden><?php p($l->t("Change successful!"))?></span>
+        <span id="files_version_cleaner_msg_fail_interval" class="files_version_cleaner-msg files_version_cleaner-red" hidden><?php p($l->t("Change unsuccessful!"))?></span>
     </div>
 </div>
