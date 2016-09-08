@@ -1,7 +1,9 @@
 { "translations": {
-    "Max number of files versions" : "最大版本數量",
-    "Max number of files historic versions" : "最大歷史版本數量",
+    "Version control" : "版本控制",
+    "Max number of files versions" : "保留區版本數量",
+    "Max number of files historic versions" : "歷史區版本數量",
     "Change successful!" : "變更成功！",
-    "Change unsuccessful!" : "變更失敗！"
+    "Change unsuccessful!" : "變更失敗！",
+    "Interval of per historic version (HR)" : "歷史版保存時間間隔 （小時）"
 },"pluralForm" :"nplurals=1; plural=0;"
 }
