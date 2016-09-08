@@ -28,14 +28,33 @@
 
     onChangeCheckbox: function(e) {
       var value = $(e.target).attr('checked') ? true : false;
+      self = this;
 
-      this.model.set({value: value});
-      this.model.save();
+      if (!value) {
+        OC.dialogs.confirm(
+          t('files_version_cleaner', 'Are you sure to cancel version coltrol on this folder?'),
+          t('files_version_cleaner', 'Version control'),
+          function(dialogValue) {
+            if(dialogValue) {
+              self.model.set({value: false});
+              self.model.save();
+              console.dir(1234);
+            }
+            else {
+              $(e.target).attr('checked', true);
+            }
+          }
+        );
+      }
+      else {
+        this.model.set({value: value});
+        this.model.save();
+      }
     },
 
     formatData: function(fileInfo) {
       return {
-        enableLabel: 'Enable version control',
+        enableLabel: t('files_version_cleaner', 'Enable version control'),
         checked: this.model.attributes.value,
       }
     },
