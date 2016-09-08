@@ -71,6 +71,30 @@ class FilesVersionCleaner extends Controller
     }
 
     /**
+     * set interval of historic version
+     *
+     * @return json response
+     */
+    public function setUserInterval($interval) {
+        $result = array();
+        $uid = \OC_User::getUser();
+        $oleInterval = $this->config->getUserValue($uid, $this->appName, "interval", \OCP\Config::getSystemValue('files_version_cleaner_default_interval'));
+
+        if ($interval < 1 || $interval > 720) {
+            $result["success"] = false;
+        }
+        else {
+            $this->config->setUserValue($uid, $this->appName, "interval", $interval);
+            $result["success"] = $this->config->getUserValue($uid, $this->appName, "interval") == $interval ? true : false;
+            if($interval > $oleInterval && $result["success"]) {
+                $this->filesVersionCleaner->deleteVersions("/");
+            }
+        }
+
+        return new JSONResponse($result);
+    }
+
+    /**
      * set user versoin control folder
      *
      * @return json response
