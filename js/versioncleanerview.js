@@ -38,7 +38,6 @@
             if(dialogValue) {
               self.model.set({value: false});
               self.model.save();
-              console.dir(1234);
             }
             else {
               $(e.target).attr('checked', true);
