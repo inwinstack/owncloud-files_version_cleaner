@@ -44,6 +44,9 @@ class FilesVersionCleaner extends Controller
 
     /**
      * setUserVersionNumber
+     *
+     * @NoAdminRequired
+     *
      * @return json response
      * @author Dauba
      **/
@@ -73,6 +76,8 @@ class FilesVersionCleaner extends Controller
     /**
      * set interval of historic version
      *
+     * @NoAdminRequired
+     * 
      * @return json response
      */
     public function setUserInterval($interval) {
@@ -96,6 +101,8 @@ class FilesVersionCleaner extends Controller
 
     /**
      * set user versoin control folder
+     *
+     * @NoAdminRequired
      *
      * @return json response
      */
@@ -125,6 +132,8 @@ class FilesVersionCleaner extends Controller
     /**
      * get folder version controller status
      *
+     * @NoAdminRequired
+     *
      * @return JSON response
      */
     public function getUserVersionFolder($folderName) {
@@ -141,6 +150,8 @@ class FilesVersionCleaner extends Controller
 
     /**
      * Delete specific version
+     *
+     * @NoAdminRequired
      *
      * @return json response
      */
