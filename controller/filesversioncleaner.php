@@ -4,6 +4,7 @@ namespace OCA\Files_Version_Cleaner\Controller;
 
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http\JSONResponse;
+use OCA\Files_Version_Cleaner\DatabaseVersionCleanerHandler;
 
 /**
  * Class FilesVersionCleaner
@@ -107,24 +108,19 @@ class FilesVersionCleaner extends Controller
      * @return json response
      */
     public function setUserVersionFolder($folderName, $value) {
-        $uid = \OC_User::getUser();
-        $folders = $this->config->getUserValue($uid, $this->appName, "folders", "[]");
-        $folders = json_decode($folders);
         $value = $value == "true" ? true : false;
-        $key = array_search($folderName, $folders);
 
-        if ($value && !in_array($folderName, $folders)) {
+        if ($value == true) {
+            $folders = $this->filesVersionCleaner->findAllSubFolder($folderName);
             $folders[] = $folderName;
+            DatabaseVersionCleanerHandler::write($folders);
         }
-        else if(!$value) {
-            unset($folders[$key]);
+        else {
             $this->filesVersionCleaner->cleanAllVersions($folderName);
+            DatabaseVersionCleanerHandler::deleteData($folderName);
         }
 
-        $foldersStr = json_encode($folders);
-        $this->config->setUserValue($uid, $this->appName, "folders", $foldersStr);
-
-        $result = $folders;
+        $result["success"] = true;
 
         return new JSONResponse($result);
     }
@@ -137,12 +133,9 @@ class FilesVersionCleaner extends Controller
      * @return JSON response
      */
     public function getUserVersionFolder($folderName) {
-        $result = array();
-        $uid = \OC_User::getUser();
-        $folders = $this->config->getUserValue($uid, $this->appName, "folders", "[]");
-        $folders = json_decode($folders);
+        $result = DatabaseVersionCleanerHandler::read($folderName);
 
-        $result["value"] = in_array($folderName, $folders) ? true : false;
+        $result["value"] = $result == false ? false : true;
         $result["success"] = true;
 
         return new JSONResponse($result);
