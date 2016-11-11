@@ -19,9 +19,14 @@
 
     initialize: function(option) {
       this.fileInfo = option.fileInfo;
-      this.folderName = this.fileInfo.attributes.path + this.fileInfo.attributes.name;
+      if(this.fileInfo.attributes.path === '/') {
+        this.folderName = this.fileInfo.attributes.path + this.fileInfo.attributes.name;
+      }
+      else {
+        this.folderName = this.fileInfo.attributes.path + '/' + this.fileInfo.attributes.name;
+      }
 
-      this.model =  new OCA.VersionCleaner.VersionCleanerModel({folderName: this.folderName});
+      this.model = new OCA.VersionCleaner.VersionCleanerModel({folderName: this.folderName});
 
       this.model.fetch();
     },
