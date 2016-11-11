@@ -40,6 +40,26 @@ class FilesVersionCleaner
         $this->nowDate = date("z") + 1;
     }
 
+    /**
+     * find all sub folder
+     *
+     * @return array folders
+     */
+    public function findAllSubFolder($root)
+    {
+        $folders = array();
+        $files = $this->filesView->getDirectoryContent($root, NULL);
+        foreach ($files as $file) {
+            $relativePath = $this->filesView->getRelativePath($file->getPath());
+            if ($file->getType() === "dir") {
+                $folders[] = $relativePath;
+                $folders = array_merge($folders, self::findAllSubFolder($relativePath));
+            }
+        }
+
+        return $folders;
+    }
+
     public function deleteVersions($root, $type = NULL)
     {
         $files = $this->filesView->getDirectoryContent($root, NULL);
@@ -69,25 +89,19 @@ class FilesVersionCleaner
         $toDelete = array();
 
         foreach ($versions as $version) {
-            $toPreserve = array();
+            $toPreserve = 0;
             $version = array_values($version);
-            for ($index1 = $userMaxVersionNum, $index2 = $userMaxVersionNum + 1; array_key_exists($index2, $version) && count($toPreserve) < $userMaxHistoricVersionNum;) {
+            for ($index1 = $userMaxVersionNum, $index2 = $userMaxVersionNum + 1; $index2 < count($version) && $toPreserve < $userMaxHistoricVersionNum; $index2++) {
                 if ((int)$version[$index1]["version"] - (int)$version[$index2]["version"] < 60*60*$interval) {
                     $toDelete[] = $version[$index2];
                 }
-                else{
-                    $toPreserve[] = $version[$index1];
+                else if($toPreserve < $userMaxHistoricVersionNum) {
+                    $toPreserve++;
                     $index1 = $index2;
                 }
-                $index2++;
-            }
-
-            if (count($toPreserve) < $userMaxHistoricVersionNum) {
-                $index1++;
-            }
-
-            for ($i = $index1; array_key_exists($i, $version); $i++) {
-                $toDelete[] = $version[$i];
+                else {
+                    $toDelete[] = $version[$index2];
+                }
             }
         }
 
