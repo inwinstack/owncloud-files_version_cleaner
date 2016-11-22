@@ -92,7 +92,7 @@ class FilesVersionCleaner
             $toPreserve = 0;
             $version = array_values($version);
             for ($index1 = $userMaxVersionNum, $index2 = $userMaxVersionNum + 1; $index2 < count($version) && $toPreserve < $userMaxHistoricVersionNum; $index2++) {
-                if ((int)$version[$index1]["version"] - (int)$version[$index2]["version"] < 60*60*$interval) {
+                if ((int)$version[$index1]["version"] - (int)$version[$index2]["version"] < 60*60*24*$interval) {
                     $toDelete[] = $version[$index2];
                 }
                 else if($toPreserve < $userMaxHistoricVersionNum) {
