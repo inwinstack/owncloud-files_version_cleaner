@@ -109,6 +109,13 @@ class FilesVersionCleaner extends Controller
      */
     public function setUserVersionFolder($folderName, $value) {
         $value = $value == "true" ? true : false;
+        $uid = \OC_User::getUser();
+
+        list($realUid, $folderName) = \OCA\Files_Versions\Storage::getUidAndFilename($folderName);
+
+        if ($uid != $realUid){
+            return;
+        }
 
         if ($value == true) {
             $folders = $this->filesVersionCleaner->findAllSubFolder($folderName);
@@ -155,6 +162,25 @@ class FilesVersionCleaner extends Controller
         $this->filesVersionCleaner->delete($file, $revision);
 
         $result["success"] = true;
+        return new JSONResponse($result);
+    }
+
+    /**
+     * get user version number
+     *
+     * @NoAdminRequired
+     * 
+     * @return json response
+     **/
+    public function getVersionsNumber($uid)
+    {
+        $result = array();
+
+        $versionNumber = $this->filesVersionCleaner->getVersionsNumber($uid);
+
+        $result["value"] = $versionNumber;
+        $result["success"] = true;
+
         return new JSONResponse($result);
     }
 }

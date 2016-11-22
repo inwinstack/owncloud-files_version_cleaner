@@ -148,4 +148,17 @@ class FilesVersionCleaner
         $cache = $storage->getCache($internalPath);
         $cache->remove($internalPath);
     }
+
+    /**
+     * get user version number
+     *
+     * @return int version number
+     **/
+    public function getVersionsNumber($uid = '')
+    {
+        $uid = !$uid ? $this->uid : $uid;
+        $versionNumber = (int)\OCP\Config::getUserValue($uid, $this->appName, "versionNumber", \OCP\Config::getSystemValue('files_version_cleaner_default_version_number'));
+
+        return $versionNumber;
+    }
 }

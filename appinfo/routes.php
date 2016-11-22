@@ -24,5 +24,6 @@ return [
         ['name' => 'FilesVersionCleaner#deleteVersion', 'url' => '/deleteVersion', 'verb' => 'GET'],
         ['name' => 'FilesVersionCleaner#setUserVersionFolder', 'url' => '/folderStatus', 'verb' => 'POST'],
         ['name' => 'FilesVersionCleaner#getUserVersionFolder', 'url' => '/folderStatus', 'verb' => 'GET'],
+        ['name' => 'FilesVersionCleaner#getVersionsNumber', 'url' => '/getVersionNumber', 'verb' => 'GET'],
     ]
 ];
