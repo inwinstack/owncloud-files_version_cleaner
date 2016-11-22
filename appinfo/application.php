@@ -39,7 +39,8 @@ class Application Extends App
                 $c->query("ServerContainer")->getUserSession(),
                 $c->query("ServerContainer")->getRootFolder(),
                 $c->query("ServerContainer")->getSystemConfig(),
-                $c->query("FilesVersionCleaner")
+                $c->query("FilesVersionCleaner"),
+                $c->query("UserRootView")
             );
         });
 
