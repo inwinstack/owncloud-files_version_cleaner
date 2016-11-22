@@ -11,6 +11,7 @@ $(document).ready(function() {
     loading_historic: $('#files_version_cleaner_loader_historic'),
     msg_historic: {"success": $('#files_version_cleaner_msg_success_historic'), "fail": $('#files_version_cleaner_msg_fail_historic')},
     input_interval: $('#files_version_cleaner_personal_interval_input'),
+    input_interval_button: $('#files_version_cleaner_personal_interval_button'),
     loading_interval: $('#files_version_cleaner_loader_interval'),
     msg_interval: {"success": $('#files_version_cleaner_msg_success_interval'), "fail": $('#files_version_cleaner_msg_fail_interval')},
   };
@@ -53,7 +54,7 @@ $(document).ready(function() {
     $.ajax({
       url: OC.generateUrl('apps/files_version_cleaner/setInterval'),
       method: 'POST',
-      data: {"interval" : self.val()},
+      data: {"interval" : FilesVersionCleaner.view.input_interval.val()},
     })
     .then(function(data) {
       msg = data.success ? msg.success : msg.fail;
@@ -67,6 +68,6 @@ $(document).ready(function() {
 
   FilesVersionCleaner.view.input.change(FilesVersionCleaner.setVersionNumber);
   FilesVersionCleaner.view.input_historic.change(FilesVersionCleaner.setVersionNumber);
-  FilesVersionCleaner.view.input_interval.change(FilesVersionCleaner.setIntervalNumber);
+  FilesVersionCleaner.view.input_interval_button.click(FilesVersionCleaner.setIntervalNumber);
 });
 })(jQuery, OC);

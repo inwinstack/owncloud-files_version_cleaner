@@ -4,7 +4,8 @@
     "Max number of files historic versions" : "歷史區版本數量",
     "Change successful!" : "變更成功！",
     "Change unsuccessful!" : "變更失敗！",
-    "Interval of per historic version (HR)" : "歷史版保存時間間隔 （小時）",
+    "Interval of per historic version (Day)" : "歷史版保存時間間隔 （天）",
+    "Submit" : "送出",
     "Enable version control" : "啟用版本控制"
 },"pluralForm" :"nplurals=1; plural=0;"
 }

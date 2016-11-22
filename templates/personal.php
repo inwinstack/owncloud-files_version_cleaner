@@ -25,8 +25,9 @@
         <span id="files_version_cleaner_msg_fail_historic" class="files_version_cleaner-msg files_version_cleaner-red" hidden><?php p($l->t("Change unsuccessful!"))?></span>
     </div>
     <div>
-        <label for="files_version_cleaner_personal_input_historic"><?php p($l->t( 'Interval of per historic version (HR)' )); ?> </label>
-        <input id="files_version_cleaner_personal_interval_input" type="number" min="1" max="720" value="<?php echo $_["interval"] ?>">
+        <label for="files_version_cleaner_personal_input_historic"><?php p($l->t( 'Interval of per historic version (Day)' )); ?> </label>
+        <input id="files_version_cleaner_personal_interval_input" type="number" min="1" max="30" value="<?php echo $_["interval"] ?>">
+        <div id="files_version_cleaner_personal_interval_button" class="inlineblock button"><?php p($l->t("Submit")); ?></div>
         <div class="loading-files_version_cleaner" id="files_version_cleaner_loader_interval" style="display: none;"></div>
         <span id="files_version_cleaner_msg_success_interval" class="files_version_cleaner-msg files_version_cleaner-green" hidden><?php p($l->t("Change successful!"))?></span>
         <span id="files_version_cleaner_msg_fail_interval" class="files_version_cleaner-msg files_version_cleaner-red" hidden><?php p($l->t("Change unsuccessful!"))?></span>
