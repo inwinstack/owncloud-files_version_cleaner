@@ -78,7 +78,7 @@ class DatabaseVersionCleanerHandler
      */
     public static function read($folderName)
     {
-        $uid = \OC_User::getUser();
+        list($uid, $folderName) = \OCA\Files_Versions\Storage::getUidAndFilename($folderName);
         $connection = \OC::$server->getDatabaseConnection();
         $prepare = $connection->prepare(self::READ_PATH_QUERY);
         $params = array($uid, $folderName);
