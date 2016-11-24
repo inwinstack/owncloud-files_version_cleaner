@@ -89,13 +89,23 @@ class Hooks
      */
     public static function renameHook($params)
     {
+        $oldDirName = dirname($params["oldpath"]);
+        $newDirName = dirname($params["newpath"]);
+        //list($uid, $fileName) = \OCA\Files_Versions\Storage::getUidAndFilename($newpath);
         $view = new \OC\Files\View("/" . \OC_User::getUser() . "/files");
+
         if($view->is_dir($params["newpath"])) {
+            if(DatabaseVersionCleanerHandler::read($newDirName)) {
+                $application = new \OCA\Files_Version_Cleaner\Appinfo\Application();
+                $filesVersionCleaner = $application->getContainer()->query("FilesVersionCleaner");
+                $folders = $filesVersionCleaner->findAllSubFolder($params["oldpath"]);
+                $folders[] = $params["oldpath"];
+
+                DatabaseVersionCleanerHandler::write($folders);
+            }
             DatabaseVersionCleanerHandler::updateData($params["oldpath"], $params["newpath"]);
         }
         else {
-            $oldDirName = dirname($params["oldpath"]);
-            $newDirName = dirname($params["newpath"]);
             if (DatabaseVersionCleanerHandler::read($oldDirName)) {
                 if (!DatabaseVersionCleanerHandler::read($newDirName)) {
                     \OCA\Files_Versions\Storage::markDeletedFile($params["oldpath"]);
@@ -139,7 +149,8 @@ class Hooks
     public function deleteVersion($fileNode)
     {
         $relativePath = $this->view->getRelativePath($fileNode->getFileInfo()->getPath());
-        $versions[] = \OCA\Files_Versions\Storage::getVersions($this->uid, $relativePath);
-        $this->filesVersionCleaner->deleteVersion($versions);
+        list($uid, $fileName) = \OCA\Files_Versions\Storage::getUidAndFilename($relativePath);
+        $versions[] = \OCA\Files_Versions\Storage::getVersions($uid, $fileName);
+        $this->filesVersionCleaner->deleteVersion($versions, $uid);
     }
 }

@@ -8,10 +8,11 @@ namespace OCA\Files_Version_Cleaner;
  */
 class DatabaseVersionCleanerHandler
 {
-    const WRITE_PATH_QUERY = "INSERT INTO `files_version_cleaner` (userid, path) VALUES ";
+    const WRITE_PATH_QUERY = "INSERT IGNORE INTO `files_version_cleaner` (userid, path) VALUES ";
     const DELETE_PATH_QUERY = "DELETE FROM `files_version_cleaner` WHERE userid = ? AND path LIKE ?";
     const UPDATE_PATH_QUERY = "UPDATE `files_version_cleaner` SET path = REPLACE (path, ?, ?) WHERE userid= ? AND path LIKE ?";
     const READ_PATH_QUERY = "SELECT userid, path FROM `files_version_cleaner` WHERE userid=? AND path=?";
+    const READ_ALL_PATH_QUERY = "SELECT userid, path FROM `files_version_cleaner` WHERE userid=? AND path LIKE ?";
 
     /**
      * write database
@@ -88,6 +89,28 @@ class DatabaseVersionCleanerHandler
         }
         
         $result = $prepare->fetch();
+
+        return $result;
+    }
+
+    /**
+     * read all data for specific user from files_version_cleaner
+     *
+     * @param string folder name
+     * @return array
+     */
+    public static function readAll($folderName)
+    {
+        list($uid, $folderName) = \OCA\Files_Versions\Storage::getUidAndFilename($folderName);
+        $connection = \OC::$server->getDatabaseConnection();
+        $prepare = $connection->prepare(self::READ_ALL_PATH_QUERY);
+        $params = array($uid, $folderName . "%");
+
+        if(!$prepare->execute($params)) {
+            return false;
+        }
+        
+        $result = $prepare->fetchAll();
 
         return $result;
     }

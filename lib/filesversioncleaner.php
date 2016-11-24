@@ -21,13 +21,6 @@ class FilesVersionCleaner
     private $filesView;
 
     /**
-     * view of files_versions
-     *
-     * @var OC\Files\View
-     */
-    private $filesVersionsView;
-
-    /**
      * @param OC\Files\View $view
      * @param path $root
      */
@@ -36,7 +29,6 @@ class FilesVersionCleaner
         $this->appName = $appName;
         $this->filesView = $filesView;
         $this->uid = \OC_User::getUser();
-        $this->filesVersionsView = new \OC\Files\View('/' . $this->uid . '/files_versions');
         $this->nowDate = date("z") + 1;
     }
 
@@ -51,7 +43,7 @@ class FilesVersionCleaner
         $files = $this->filesView->getDirectoryContent($root, NULL);
         foreach ($files as $file) {
             $relativePath = $this->filesView->getRelativePath($file->getPath());
-            if ($file->getType() === "dir") {
+            if ($file->getType() === "dir" && !$file->isShared()) {
                 $folders[] = $relativePath;
                 $folders = array_merge($folders, self::findAllSubFolder($relativePath));
             }
@@ -80,11 +72,12 @@ class FilesVersionCleaner
         call_user_func($func, $versions);
     }
     
-    public function deleteVersion($versions)
+    public function deleteVersion($versions, $uid = '')
     {
-        $userMaxVersionNum = (int)\OCP\Config::getUserValue($this->uid, $this->appName, "versionNumber", \OCP\Config::getSystemValue('files_version_cleaner_default_version_number'));
-        $userMaxHistoricVersionNum = (int)\OCP\Config::getUserValue($this->uid, $this->appName, "historicVersionNumber", \OCP\Config::getSystemValue('files_version_cleaner_default_historic_version_number'));
-        $interval = (int)\OCP\Config::getUserValue($this->uid, $this->appName, "interval", \OCP\Config::getSystemValue('files_version_cleaner_default_interval'));
+        $uid = !$uid ? $this->uid : $uid;
+        $userMaxVersionNum = (int)\OCP\Config::getUserValue($uid, $this->appName, "versionNumber", \OCP\Config::getSystemValue('files_version_cleaner_default_version_number'));
+        $userMaxHistoricVersionNum = (int)\OCP\Config::getUserValue($uid, $this->appName, "historicVersionNumber", \OCP\Config::getSystemValue('files_version_cleaner_default_historic_version_number'));
+        $interval = (int)\OCP\Config::getUserValue($uid, $this->appName, "interval", \OCP\Config::getSystemValue('files_version_cleaner_default_interval'));
 
         $toDelete = array();
 
@@ -107,7 +100,7 @@ class FilesVersionCleaner
 
         if (!empty($toDelete)) {
             foreach ($toDelete as $v) {
-                self::delete($v["path"], $v["version"]);
+                self::delete($v["path"], $v["version"], $uid);
             }
         }
     }
@@ -124,25 +117,28 @@ class FilesVersionCleaner
         foreach ($files as $file) {
             $relativePath = $this->filesView->getRelativePath($file->getPath());
 
-            if($file->getType() === "dir") {
-                self::cleanAllVersions($relativePath);
-            }
-            else {
-                $versions = \OCA\Files_Versions\Storage::getVersions($this->uid, $relativePath);
-                if (!empty($versions)) {
-                    foreach ($versions as $v) {
-                        \OC_Hook::emit('\OCP\Versions', 'preDelete', array('path' => $relativePath . $v['version']));
-                        self::delete($relativePath, $v['version']);
-                        \OC_Hook::emit('\OCP\Versions', 'delete', array('path' => $relativePath . $v['version']));
+            if(!$file->isShared()) {
+                if($file->getType() === "dir") {
+                    self::cleanAllVersions($relativePath);
+                }
+                else {
+                    $versions = \OCA\Files_Versions\Storage::getVersions($this->uid, $relativePath);
+                    if (!empty($versions)) {
+                        foreach ($versions as $v) {
+                            \OC_Hook::emit('\OCP\Versions', 'preDelete', array('path' => $relativePath . $v['version']));
+                            self::delete($relativePath, $v['version']);
+                            \OC_Hook::emit('\OCP\Versions', 'delete', array('path' => $relativePath . $v['version']));
+                        }
                     }
                 }
             }
         }
     }
     
-    public function delete($path, $revision)
+    public function delete($path, $revision, $uid = '')
     {
-        $view = new \OC\Files\View('/' . \OC_User::getUser() . '/files_versions');
+        $uid = !$uid ? $this->uid : $uid;
+        $view = new \OC\Files\View('/' . $uid . '/files_versions');
         $view->unlink($path . ".v" . $revision);
         list($storage, $internalPath) = $view->resolvePath($path);
         $cache = $storage->getCache($internalPath);

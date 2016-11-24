@@ -5,9 +5,11 @@ $(document).ready(function() {
 
   FilesVersionCleaner.view= {
     input: $('#files_version_cleaner_personal_input'),
+    input_button: $('#files_version_cleaner_personal_button'),
     loading: $('#files_version_cleaner_loader'),
     msg: {"success": $('#files_version_cleaner_msg_success'), "fail": $('#files_version_cleaner_msg_fail')},
     input_historic: $('#files_version_cleaner_personal_input_historic'),
+    input_historic_button: $('#files_version_cleaner_personal_historic_button'),
     loading_historic: $('#files_version_cleaner_loader_historic'),
     msg_historic: {"success": $('#files_version_cleaner_msg_success_historic'), "fail": $('#files_version_cleaner_msg_fail_historic')},
     input_interval: $('#files_version_cleaner_personal_interval_input'),
@@ -23,16 +25,18 @@ $(document).ready(function() {
     if(key === "versionNumber") {
       var loader = FilesVersionCleaner.view.loading.show();
       var msg = FilesVersionCleaner.view.msg;
+      var val = FilesVersionCleaner.view.input.val();
     }
     else {
       var loader = FilesVersionCleaner.view.loading_historic.show();
       var msg = FilesVersionCleaner.view.msg_historic;
+      var val = FilesVersionCleaner.view.input_historic.val();
     }
 
     $.ajax({
       url: OC.generateUrl('apps/files_version_cleaner/set_number'),
       method: 'POST',
-      data: {"versionNumber" : self.val(), "key" : key},
+      data: {"versionNumber" : val, "key" : key},
     })
     .then(function(data) {
       msg = data.success ? msg.success : msg.fail;
@@ -66,8 +70,8 @@ $(document).ready(function() {
     });
   };
 
-  FilesVersionCleaner.view.input.change(FilesVersionCleaner.setVersionNumber);
-  FilesVersionCleaner.view.input_historic.change(FilesVersionCleaner.setVersionNumber);
+  FilesVersionCleaner.view.input_button.click(FilesVersionCleaner.setVersionNumber);
+  FilesVersionCleaner.view.input_historic_button.click(FilesVersionCleaner.setVersionNumber);
   FilesVersionCleaner.view.input_interval_button.click(FilesVersionCleaner.setIntervalNumber);
 });
 })(jQuery, OC);
