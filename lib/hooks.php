@@ -91,19 +91,18 @@ class Hooks
     {
         $oldDirName = dirname($params["oldpath"]);
         $newDirName = dirname($params["newpath"]);
-        //list($uid, $fileName) = \OCA\Files_Versions\Storage::getUidAndFilename($newpath);
         $view = new \OC\Files\View("/" . \OC_User::getUser() . "/files");
 
         if($view->is_dir($params["newpath"])) {
+            DatabaseVersionCleanerHandler::updateData($params["oldpath"], $params["newpath"]);
             if(DatabaseVersionCleanerHandler::read($newDirName)) {
                 $application = new \OCA\Files_Version_Cleaner\Appinfo\Application();
-                $filesVersionCleaner = $application->getContainer()->query("FilesVersionCleaner");
-                $folders = $filesVersionCleaner->findAllSubFolder($params["oldpath"]);
-                $folders[] = $params["oldpath"];
+                $filesVersionsCleaner = $application->getContainer()->query("FilesVersionCleaner");
+                $folders = $filesVersionsCleaner->findAllSubFolder($params["newpath"]);
+                $folders[] = $params["newpath"];
 
                 DatabaseVersionCleanerHandler::write($folders);
             }
-            DatabaseVersionCleanerHandler::updateData($params["oldpath"], $params["newpath"]);
         }
         else {
             if (DatabaseVersionCleanerHandler::read($oldDirName)) {
