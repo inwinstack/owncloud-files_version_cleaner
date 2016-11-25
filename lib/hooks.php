@@ -73,7 +73,7 @@ class Hooks
      **/
     public function register()
     {
-        $postWriteCallback = array($this, "deleteVersion");
+        $postWriteCallback = array($this, "postWriteHook");
         $preDeleteCallback = array($this, "preDeleteHook");
 
         $this->userFolder->listen("\OC\Files", "postWrite", $postWriteCallback);
@@ -145,8 +145,18 @@ class Hooks
      *
      * @return void
      */
-    public function deleteVersion($fileNode)
+    public function postWriteHook($fileNode)
     {
+        if($fileNode->getType() === "dir") {
+            $folder = array();
+            $view = new \OC\Files\View("/" . \OC_User::getUser() . "/files");
+            $dirName = $view->getRelativePath($fileNode->getParent()->getpath());
+            if (DatabaseVersionCleanerHandler::read($dirName)) {
+                $folder[] = $view->getRelativePath($fileNode->getPath());
+                DatabaseVersionCleanerHandler::write($folder);
+            }
+        }
+
         $relativePath = $this->view->getRelativePath($fileNode->getFileInfo()->getPath());
         list($uid, $fileName) = \OCA\Files_Versions\Storage::getUidAndFilename($relativePath);
         $versions[] = \OCA\Files_Versions\Storage::getVersions($uid, $fileName);
