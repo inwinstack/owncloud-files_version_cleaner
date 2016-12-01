@@ -56,10 +56,6 @@ class FilesVersionCleaner extends Controller
         $uid = \OC_User::getUser();
         $params = array("/");
 
-        if ($key == "historicVersionNumber") {
-            $params[] = "historic";
-        }
-
         $oldMaxVersionNum = $this->config->getUserValue($uid, $this->appName, $key);
         $func = array($this->filesVersionCleaner, "deleteVersions");
 
