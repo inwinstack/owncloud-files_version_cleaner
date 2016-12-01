@@ -55,8 +55,8 @@ class FilesVersionCleaner
     public function deleteVersions($root, $type = NULL)
     {
         $files = $this->filesView->getDirectoryContent($root, NULL);
-        $func = $type === "historic" ? array($this, "deleteHistoricVersion") : array($this, "deleteVersion");
         $func = array($this, "deleteVersion");
+        $versions = array();
         
         foreach ($files as $file) {
             $relativePath = $this->filesView->getRelativePath($file->getPath());
@@ -69,7 +69,9 @@ class FilesVersionCleaner
             }
         }
 
-        call_user_func($func, $versions);
+        if ($versions) {
+            call_user_func($func, $versions);
+        }
     }
     
     public function deleteVersion($versions, $uid = '')
@@ -84,7 +86,7 @@ class FilesVersionCleaner
         foreach ($versions as $version) {
             $toPreserve = 0;
             $version = array_values($version);
-            for ($index1 = $userMaxVersionNum, $index2 = $userMaxVersionNum + 1; $index2 < count($version) && $toPreserve < $userMaxHistoricVersionNum; $index2++) {
+            for ($index1 = $userMaxVersionNum, $index2 = $userMaxVersionNum + 1; $index1 < count($version); $index2++) {
                 if ((int)$version[$index1]["version"] - (int)$version[$index2]["version"] < 60*60*24*$interval) {
                     $toDelete[] = $version[$index2];
                 }
@@ -93,7 +95,8 @@ class FilesVersionCleaner
                     $index1 = $index2;
                 }
                 else {
-                    $toDelete[] = $version[$index2];
+                    $toDelete[] = $version[$index1];
+                    $index1++;
                 }
             }
         }
