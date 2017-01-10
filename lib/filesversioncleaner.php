@@ -91,6 +91,21 @@ class FilesVersionCleaner
                     $toDelete[] = $version[$index2];
                 }
                 else if($toPreserve < $userMaxHistoricVersionNum) {
+
+                    /*Insert file history version to db table."*/
+                    $sql = "INSERT INTO  `history_files_versions` (`uid` ,`path` ,`version`) 
+                            SELECT ?,?,? 
+                            FROM DUAL 
+                            WHERE NOT EXISTS (
+                                SELECT * FROM `history_files_versions` WHERE `history_files_versions`.`uid` = ? 
+                                AND `history_files_versions`.`path` = ? 
+                                AND `history_files_versions`.`version` = ? 
+                                LIMIT 1
+                            )";
+                    $connection = \OC::$server->getDatabaseConnection();
+                    $prepare = $connection->prepare($sql);
+                    $prepare->execute(array($uid,$version[$index1]['path'],$version[$index1]['version'],$uid,$version[$index1]['path'],$version[$index1]['version']));
+
                     $toPreserve++;
                     $index1 = $index2;
                 }
@@ -148,6 +163,15 @@ class FilesVersionCleaner
         list($storage, $internalPath) = $view->resolvePath($path);
         $cache = $storage->getCache($internalPath);
         $cache->remove($internalPath);
+
+        /*Delete file history version to db table."*/
+        $sql = "DELETE FROM `history_files_versions` 
+                WHERE `history_files_versions`.`uid` = ? 
+                AND `history_files_versions`.`path` = ?
+                AND `history_files_versions`.`version` = ?";
+        $connection = \OC::$server->getDatabaseConnection();
+        $prepare = $connection->prepare($sql);
+        $prepare->execute(array($uid,$path,$revision));
     }
 
     /**
