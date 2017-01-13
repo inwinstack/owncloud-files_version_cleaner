@@ -43,6 +43,8 @@
             if(dialogValue) {
               self.model.set({value: false});
               self.model.save();
+              $('.thumbnailContainer').find('a').css('background-image', 'url("/owncloud/core/img/filetypes/folder.svg")');
+              $('#fileList').find('tr[data-file="' + self.fileInfo.get('name') + '"]').find('.thumbnail').css('background-image', 'url("/owncloud/core/img/filetypes/folder.svg")')
             }
             else {
               $(e.target).attr('checked', true);
@@ -53,7 +55,16 @@
       else {
         this.model.set({value: value});
         this.model.save();
+        if(value == true) {
+          $('.thumbnailContainer').find('a').css('background-image', 'url("/owncloud/themes/MOE/core/img/filetypes/folder-version.svg")');
+          $('#fileList').find('tr[data-file="' + self.fileInfo.get('name') + '"]').find('.thumbnail').css('background-image', 'url("/owncloud/themes/MOE/core/img/filetypes/folder-version.svg")')
+        }
+        else{
+          $('.thumbnailContainer').find('a').css('background-image', 'url("/owncloud/core/img/filetypes/folder.svg")');
+          $('#fileList').find('tr[data-file="' + self.fileInfo.get('name') + '"]').find('.thumbnail').css('background-image', 'url("/owncloud/core/img/filetypes/folder.svg")')
+        }
       }
+
     },
 
     formatData: function(fileInfo) {
