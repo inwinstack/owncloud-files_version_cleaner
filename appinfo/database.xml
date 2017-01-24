@@ -20,4 +20,26 @@
     </field>
   </declaration>
  </table>
+ <table>
+  <name>history_files_versions</name>
+  <declaration>
+    <field>
+      <name>uid</name>
+      <type>text</type>
+      <notnull>true</notnull>
+      <length>32</length>
+    </field>
+    <field>
+      <name>path</name>
+      <type>clob</type>
+      <notnull>true</notnull>
+    </field>
+    <field>
+      <name>version</name>
+      <type>text</type>
+      <notnull>true</notnull>
+      <length>255</length>
+    </field>
+  </declaration>
+ </table>
 </database>
