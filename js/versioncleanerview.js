@@ -38,7 +38,7 @@
       if (!value) {
         OC.dialogs.confirm(
           t('files_version_cleaner', 'Are you sure to cancel version coltrol on this folder?'),
-          t('files_version_cleaner', 'Version control'),
+          t('files_version_cleaner', 'Cancel version control'),
           function(dialogValue) {
             if(dialogValue) {
               self.model.set({value: false});
