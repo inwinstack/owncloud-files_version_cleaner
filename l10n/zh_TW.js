@@ -13,6 +13,6 @@ OC.L10N.register(
     "Interval of per historic version (HR)" : "歷史版保存時間間隔 （小時）",
     "Enable version control" : "啟用版本控制",
     "Are you sure to delete this version ?" : "刪除版本後，您將無法透過本服務回收桶還原此版本。",
-    "Are you sure to revert this version ?": "這將會取代您檔案列表上的目前版本，而且無法無法還原。",
+    "Are you sure to revert this version ?": "這將會取代您檔案列表上的目前版本，而且無法還原。",
 }, 
 "nplurals=1; plural=0;");
