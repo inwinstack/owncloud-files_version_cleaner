@@ -43,8 +43,10 @@
             if(dialogValue) {
               self.model.set({value: false});
               self.model.save();
-              $('.thumbnailContainer').find('a').css('background-image', 'url("/owncloud/core/img/filetypes/folder.svg")');
-              $('#fileList').find('tr[data-file="' + self.fileInfo.get('name') + '"]').find('.thumbnail').css('background-image', 'url("/owncloud/core/img/filetypes/folder.svg")')
+              $image = OC.getRootPath() + '/core/img/filetypes/folder.svg';
+              $cssUrl = 'url("' + $image + '")';
+              $('.thumbnailContainer').find('a').css('background-image', $cssUrl);
+              $('#fileList').find('tr[data-file="' + self.fileInfo.get('name') + '"]').find('.thumbnail').css('background-image', $cssUrl)
             }
             else {
               $(e.target).attr('checked', true);
@@ -56,12 +58,16 @@
         this.model.set({value: value});
         this.model.save();
         if(value == true) {
-          $('.thumbnailContainer').find('a').css('background-image', 'url("/owncloud/themes/MOE/core/img/filetypes/folder-version.svg")');
-          $('#fileList').find('tr[data-file="' + self.fileInfo.get('name') + '"]').find('.thumbnail').css('background-image', 'url("/owncloud/themes/MOE/core/img/filetypes/folder-version.svg")')
+          $image = OC.getRootPath() + '/themes/MOE/core/img/filetypes/folder-version.svg';
+          $cssUrl = 'url("' + $image + '")';
+          $('.thumbnailContainer').find('a').css('background-image', $cssUrl);
+          $('#fileList').find('tr[data-file="' + self.fileInfo.get('name') + '"]').find('.thumbnail').css('background-image', $cssUrl)
         }
         else{
-          $('.thumbnailContainer').find('a').css('background-image', 'url("/owncloud/core/img/filetypes/folder.svg")');
-          $('#fileList').find('tr[data-file="' + self.fileInfo.get('name') + '"]').find('.thumbnail').css('background-image', 'url("/owncloud/core/img/filetypes/folder.svg")')
+          $image = OC.getRootPath() + '/core/img/filetypes/folder.svg';
+          $cssUrl = 'url("' + $image + '")';
+          $('.thumbnailContainer').find('a').css('background-image', $cssUrl);
+          $('#fileList').find('tr[data-file="' + self.fileInfo.get('name') + '"]').find('.thumbnail').css('background-image', $cssUrl)
         }
       }
 
