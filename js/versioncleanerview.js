@@ -2,6 +2,7 @@
   OCA.VersionCleaner = OCA.VersionCleaner || {};
 
   var TEMPLATE = '<%= enableLabel %> <input id="versionCleanerCheckbox" type="checkbox" <% if (checked){ %> checked <% } %> >';
+  var TEMPLATE2 = '<input id="versionCleanerText" style="width: 94%;  margin-top: 19px;"" type="text" placeholder="<%= enableLabel %>" disabled = "disabled">';
   var VersionCleanerView = OC.Backbone.View.extend({
     model: function(option) {
       return new OCA.VersionCleaner.VersionCleanerModel(option);
@@ -12,6 +13,7 @@
     folderName: undefined,
 
     template: _.template(TEMPLATE),
+    template2: _.template(TEMPLATE2),
 
     events: {
       'change #versionCleanerCheckbox': 'onChangeCheckbox'
@@ -80,7 +82,22 @@
       }
     },
 
+    notSupportFormatData: function(fileInfo) {
+	      return {
+	        enableLabel: t('files_version_cleaner', 'External storage not support files version.'),
+	        checked: this.model.attributes.value,
+	      }
+	    },
+    
     render: function() {
+	var data = document.getElementsByClassName('highlighted');
+	if (data.length == 1){
+	    var isExternal = data[0].hasAttribute('data-mounttype');
+	    if (isExternal){
+		this.$el.html(this.template2(this.notSupportFormatData()));
+		return this;
+	    }
+	}
       this.$el.html(this.template(this.formatData()));
       return this;
     },
