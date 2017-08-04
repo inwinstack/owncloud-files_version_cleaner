@@ -43,12 +43,23 @@
           t('files_version_cleaner', 'Cancel version control'),
           function(dialogValue) {
             if(dialogValue) {
-              self.model.set({value: false});
-              self.model.save();
-              $image = OC.getRootPath() + '/core/img/filetypes/folder.svg';
-              $cssUrl = 'url("' + $image + '")';
-              $('.thumbnailContainer').find('a').css('background-image', $cssUrl);
-              $('#fileList').find('tr[data-file="' + self.fileInfo.get('name') + '"]').find('.thumbnail').css('background-image', $cssUrl)
+              OC.dialogs.confirm(
+                t('files_version_cleaner', 'Are you really sure to cancel?'),
+                t('files_version_cleaner', 'Cancel version control'),
+                function(dialogValue) {
+                  if(dialogValue) {
+                    self.model.set({value: false});
+                    self.model.save();
+                    $image = OC.getRootPath() + '/core/img/filetypes/folder.svg';
+                    $cssUrl = 'url("' + $image + '")';
+                    $('.thumbnailContainer').find('a').css('background-image', $cssUrl);
+                    $('#fileList').find('tr[data-file="' + self.fileInfo.get('name') + '"]').find('.thumbnail').css('background-image', $cssUrl)
+                  }
+                  else {
+                    $(e.target).attr('checked', true);
+                  }
+                }
+              );
             }
             else {
               $(e.target).attr('checked', true);
