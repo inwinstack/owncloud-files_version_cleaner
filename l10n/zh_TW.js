@@ -6,6 +6,7 @@ OC.L10N.register(
     "Delete version" : "刪除版本",
     "Revert version" : "還原版本",
     "Are you sure to cancel version coltrol on this folder?" : "若取消版本控制，此資料夾底下所有檔案的版本皆會刪除，而且無法還原。",
+    "Are you really sure to cancel?" : "確定取消?",
     "Max number of files versions" : "保留區版本數量",
     "Max number of files historic versions" : "歷史區版本數量",
     "Change successful!" : "變更成功！",
