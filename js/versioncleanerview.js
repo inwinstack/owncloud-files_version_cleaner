@@ -57,14 +57,8 @@
                     $('.thumbnailContainer').find('a').css('background-image', $cssUrl);
                     $('#fileList').find('tr[data-file="' + self.fileInfo.get('name') + '"]').find('.thumbnail').css('background-image', $cssUrl)
                   }
-                  else {
-                    //$(e.target).attr('checked', true);
-                  }
                 }
               );
-            }
-            else {
-              //$(e.target).attr('checked', true);
             }
           }
         );
