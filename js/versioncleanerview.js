@@ -37,6 +37,7 @@
       var value = $(e.target).attr('checked') ? true : false;
       self = this;
 
+      $(e.target).attr('checked', true);
       if (!value) {
         OC.dialogs.confirmN(
           t('files_version_cleaner', 'Are you sure to cancel version coltrol on this folder?'),
@@ -48,6 +49,7 @@
                 t('files_version_cleaner', 'Cancel version control'),
                 function(dialogValue) {
                   if(dialogValue) {
+      	            $(e.target).attr('checked', false);
                     self.model.set({value: false});
                     self.model.save();
                     $image = OC.getRootPath() + '/core/img/filetypes/folder.svg';
@@ -56,13 +58,13 @@
                     $('#fileList').find('tr[data-file="' + self.fileInfo.get('name') + '"]').find('.thumbnail').css('background-image', $cssUrl)
                   }
                   else {
-                    $(e.target).attr('checked', true);
+                    //$(e.target).attr('checked', true);
                   }
                 }
               );
             }
             else {
-              $(e.target).attr('checked', true);
+              //$(e.target).attr('checked', true);
             }
           }
         );
