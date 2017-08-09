@@ -38,12 +38,12 @@
       self = this;
 
       if (!value) {
-        OC.dialogs.confirm(
+        OC.dialogs.confirmN(
           t('files_version_cleaner', 'Are you sure to cancel version coltrol on this folder?'),
           t('files_version_cleaner', 'Cancel version control'),
           function(dialogValue) {
             if(dialogValue) {
-              OC.dialogs.confirm(
+              OC.dialogs.confirmN(
                 t('files_version_cleaner', 'Are you really sure to cancel?'),
                 t('files_version_cleaner', 'Cancel version control'),
                 function(dialogValue) {
