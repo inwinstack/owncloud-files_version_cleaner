@@ -6,6 +6,7 @@
     "Change unsuccessful!" : "變更失敗！",
     "Interval of per historic version (Day)" : "歷史版保存時間間隔 （天）",
     "Update" : "更新",
-    "Enable version control" : "啟用版本控制"
+    "Enable version control" : "啟用版本控制",
+    "Help" : "操作說明"
 },"pluralForm" :"nplurals=1; plural=0;"
 }

@@ -4,6 +4,7 @@
 ?>
 <div class="section" id="files_version_cleaner_section">
     <h2><?php p($l->t('Version control')); ?></h2>
+    <a class="files_version_cleaner_info svg" title="" data-original-title=<?php p($l->t('Help')); ?>></a>
     <div>
         <label for="files_version_cleaner_personal_input"><?php p($l->t( 'Max number of files versions' )); ?> </label>
         <select id="files_version_cleaner_personal_input">
