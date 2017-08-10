@@ -18,3 +18,13 @@
   font-size: 1.3em;
   margin-left: 3px;
 }
+
+#files_version_cleaner_section h2{
+    display: inline-block;
+}
+
+.files_version_cleaner_info{
+    background: url('../img/help.png') no-repeat center;
+    padding: 11px 20px;
+    vertical-align: text-bottom;
+}

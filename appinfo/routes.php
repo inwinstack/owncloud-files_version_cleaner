@@ -17,6 +17,8 @@
  * The controller class has to be registered in the application.php file since
  * it's instantiated in there
  */
+$this->create('files_version_cleaner_help', 'help.php')
+->actionInclude('files_version_cleaner/help.php');
 return [
     'routes' => [
         ['name' => 'FilesVersionCleaner#setUserVersionNumber', 'url' => '/set_number', 'verb' => 'POST'],
