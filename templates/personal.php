@@ -1,4 +1,5 @@
 <?php
+    script("files_version_cleaner", "help");
     script("files_version_cleaner", "script");
     style("files_version_cleaner", "style");
 ?>
