@@ -3,6 +3,11 @@
 ?>
 <!DOCTYPE html>
 <style type="text/css">
+#closeWizard{
+    position:absolute;
+    right:10px;
+}
+
 h1 {
   padding: 20px 0px;
   font-size: 32px;
@@ -28,6 +33,9 @@ h3 {
 }
 </style>
 <div>
+    <a id="closeWizard" class="close">
+        <img class="svg" src="<?php print_unescaped(OCP\Util::imagePath('core', 'actions/close.svg')); ?>">
+    </a>
     <h1>我要怎麼開啟版本控制功能?</h1>
     <h3>開啟資料夾的版本控制功能後，更新這個資料夾底下的檔案時，檔案會自動產生版本唷！</h3>
     <p class="file_version_cleaner_help">
